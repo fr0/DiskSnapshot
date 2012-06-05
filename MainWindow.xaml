@@ -1,0 +1,71 @@
+﻿<Window x:Class="DiskSnapshot.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DiskSnapshot"
+        Title="DiskSnapshot" Height="500" Width="525" x:Name="Window">
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TreeListView/themes/classic.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+      <local:BooleanToVisibilityNegatedConverter x:Key="BooleanToVisibilityNegatedConverter"/>
+      <local:BooleanNotConverter x:Key="BooleanNotConverter"/>
+      <DataTemplate x:Key="CellTemplate_Name">
+        <TextBlock Text="{Binding Path=DirectoryName}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="CellTemplate_Size">
+        <TextBlock Text="{Binding Path=CurrentSizeString}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="CellTemplate_Delta">
+        <TextBlock Text="{Binding Path=DeltaString}"/>
+      </DataTemplate>
+    </ResourceDictionary>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+    <StackPanel Orientation="Horizontal" Margin="0,4" Grid.Row="0" Grid.Column="0">
+      <TextBlock VerticalAlignment="Center" Margin="8,0" FontWeight="Bold" FontSize="16" Text="{Binding ElementName=Window, Path=DirectoryStructure.Root.DirectoryName}"/>
+      <Button x:Name="BtnScan" Click="BtnScan_Click" MinWidth="80" Margin="3,0" IsEnabled="{Binding ElementName=Window, Path=Working, Converter={StaticResource BooleanNotConverter}}">Scan</Button>
+      <TextBlock VerticalAlignment="Center" Margin="3,0" Visibility="{Binding ElementName=Window, Path=Working, Converter={StaticResource BooleanToVisibilityConverter}}">Working...</TextBlock>
+      <Button x:Name="BtnSave" Click="BtnSave_Click" MinWidth="80" Margin="3,0"
+              Visibility="{Binding ElementName=Window, Path=Working, Converter={StaticResource BooleanToVisibilityNegatedConverter}}">Save</Button>
+      <Button x:Name="BtnSelectDrive" Click="BtnSelectDrive_Click" MinWidth="80" Margin="3,0"
+              Visibility="{Binding ElementName=Window, Path=Working, Converter={StaticResource BooleanToVisibilityNegatedConverter}}">Select Drive</Button>
+      <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=Window, Path=IsSelectingDrive, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <ComboBox x:Name="CbxDrives" ItemsSource="{Binding ElementName=Window, Path=AvailableDrives}" DisplayMemberPath="Name" Margin="3,0"/>
+        <Button x:Name="BtnOKDrive" Click="BtnOKDrive_Click" Margin="3,0">Select</Button>
+        <Button x:Name="BtnCancelDrive" Click="BtnCancelDrive_Click" Margin="3,0">Cancel</Button>
+      </StackPanel>
+      <TextBlock Text="{Binding ElementName=Window, Path=ProgressDirectory}" Margin="4,0" VerticalAlignment="Center"
+                 Visibility="{Binding ElementName=Window, Path=Working, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    </StackPanel>
+
+    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=Window, Path=Progress}" Margin="4,0" VerticalAlignment="Center" HorizontalAlignment="Right"
+               Visibility="{Binding ElementName=Window, Path=Working, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    <local:TreeListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=Window, Path=DirectoryStructure.Root.Children}"
+                        Style="{StaticResource TreeListViewStyle}">
+      <local:TreeListView.ItemTemplate>
+        <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+          <TextBlock Text="{Binding Path=DirectoryName}"/>
+        </HierarchicalDataTemplate>
+      </local:TreeListView.ItemTemplate>
+      <local:TreeListView.Columns>
+        <GridViewColumn Header="Name" CellTemplate="{StaticResource CellTemplate_Name}" Width="200"/>
+        <GridViewColumn Header="Size" CellTemplate="{StaticResource CellTemplate_Size}" Width="120"/>
+        <GridViewColumn Header="Delta" CellTemplate="{StaticResource CellTemplate_Delta}" Width="120"/>
+      </local:TreeListView.Columns>
+      <local:TreeListView.ItemContainerStyle>
+        <Style TargetType="{x:Type local:TreeListViewItem}" BasedOn="{StaticResource TreeListViewItemStyle}">
+        </Style>
+      </local:TreeListView.ItemContainerStyle>
+    </local:TreeListView>
+  </Grid>
+</Window>
