@@ -16,7 +16,7 @@ namespace DiskSnapshot
       ThreadPool.QueueUserWorkItem(delegate
       {
         s.Refresh(d => { if (progress != null) dispatcher.BeginInvoke(new Action(() => progress(d))); });
-        s.LastScanTimeInSeconds = (start - DateTime.Now).TotalSeconds;
+        s.LastScanTimeInSeconds = (DateTime.Now - start).TotalSeconds;
         dispatcher.BeginInvoke(callback);
       });
     }

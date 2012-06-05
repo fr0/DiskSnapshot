@@ -23,6 +23,7 @@ namespace DiskSnapshot
     public MainWindow()
     {
       InitializeComponent();
+      RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
       HeartbeatTimer = new DispatcherTimer {Interval = TimeSpan.FromSeconds(1.0)};
       HeartbeatTimer.Tick += HeartbeatTimer_Tick;
       AvailableDrives = System.IO.DriveInfo.GetDrives().Where(d => (d.DriveType != DriveType.NoRootDirectory)).ToArray();

@@ -12,7 +12,26 @@
       <local:BooleanToVisibilityNegatedConverter x:Key="BooleanToVisibilityNegatedConverter"/>
       <local:BooleanNotConverter x:Key="BooleanNotConverter"/>
       <DataTemplate x:Key="CellTemplate_Name">
-        <TextBlock Text="{Binding Path=DirectoryName}"/>
+        <Grid>
+          <DockPanel LastChildFill="True">
+            <Image x:Name="ImgNormal" DockPanel.Dock="Left" Source="Images/folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center" Visibility="Visible" />
+            <Image x:Name="ImgAdded" DockPanel.Dock="Left" Source="Images/folder_added.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+            <Image x:Name="ImgDeleted" DockPanel.Dock="Left" Source="Images/folder_deleted.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+            <Grid>
+              <TextBlock Text="{Binding Path=DirectoryName}"/>
+            </Grid>
+          </DockPanel>
+        </Grid>
+        <DataTemplate.Triggers>
+          <DataTrigger Binding="{Binding Path=State}" Value="Added">
+            <Setter TargetName="ImgNormal" Property="Visibility" Value="Collapsed"/>
+            <Setter TargetName="ImgAdded" Property="Visibility" Value="Visible"/>
+          </DataTrigger>
+          <DataTrigger Binding="{Binding Path=State}" Value="Deleted">
+            <Setter TargetName="ImgNormal" Property="Visibility" Value="Collapsed"/>
+            <Setter TargetName="ImgDeleted" Property="Visibility" Value="Visible"/>
+          </DataTrigger>
+        </DataTemplate.Triggers>
       </DataTemplate>
       <DataTemplate x:Key="CellTemplate_Size">
         <TextBlock Text="{Binding Path=CurrentSizeString}"/>
