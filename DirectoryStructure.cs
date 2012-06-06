@@ -105,7 +105,7 @@ namespace DiskSnapshot
       {
         if (level < 3)
           progress(fullPath);
-        Children = new List<DirectoryStructureEntry>(Children);
+        Children = new List<DirectoryStructureEntry>(Children.OrderBy(x => x.DirectoryName, LogicalStringComparer.Comparer));
         long size = Directory.GetFiles(fullPath).Select(file => new FileInfo(file)).Select(info => info.Length).Sum();
         foreach (var child in Children)
         {
@@ -122,7 +122,7 @@ namespace DiskSnapshot
             {
               child.Refresh(fullPath, level+1, progress, true);
               size += child.CurrentSize;
-              Children.Add(child);
+              Children.AddSorted(child, (x,y) => LogicalStringComparer.Comparer.Compare(x.DirectoryName, y.DirectoryName));
             }
             catch (IOException) { }
             catch (UnauthorizedAccessException) { }

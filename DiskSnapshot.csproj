@@ -35,6 +35,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero" />
@@ -61,6 +68,8 @@
     </ApplicationDefinition>
     <Compile Include="Converters.cs" />
     <Compile Include="DirectoryStructure.cs" />
+    <Compile Include="List.cs" />
+    <Compile Include="LogicalStringComparer.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="TreeListView\DragDropScrollViewer.cs" />
     <Compile Include="TreeListView\LevelToIndentConverter.cs" />
@@ -123,6 +132,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -144,6 +154,9 @@
     <Resource Include="Images\folder.png" />
     <Resource Include="Images\folder_added.png" />
     <Resource Include="Images\folder_deleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="App.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

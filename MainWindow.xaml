@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:DiskSnapshot"
-        Title="DiskSnapshot" Height="500" Width="525" x:Name="Window">
+        Icon="App.ico" Title="DiskSnapshot" Height="500" Width="525" x:Name="Window">
   <Window.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -18,7 +18,7 @@
             <Image x:Name="ImgAdded" DockPanel.Dock="Left" Source="Images/folder_added.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center" Visibility="Collapsed"/>
             <Image x:Name="ImgDeleted" DockPanel.Dock="Left" Source="Images/folder_deleted.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center" Visibility="Collapsed"/>
             <Grid>
-              <TextBlock Text="{Binding Path=DirectoryName}"/>
+              <TextBlock x:Name="Txt" Text="{Binding Path=DirectoryName}"/>
             </Grid>
           </DockPanel>
         </Grid>
@@ -26,10 +26,12 @@
           <DataTrigger Binding="{Binding Path=State}" Value="Added">
             <Setter TargetName="ImgNormal" Property="Visibility" Value="Collapsed"/>
             <Setter TargetName="ImgAdded" Property="Visibility" Value="Visible"/>
+            <Setter TargetName="Txt" Property="Foreground" Value="DarkGreen"/>
           </DataTrigger>
           <DataTrigger Binding="{Binding Path=State}" Value="Deleted">
             <Setter TargetName="ImgNormal" Property="Visibility" Value="Collapsed"/>
             <Setter TargetName="ImgDeleted" Property="Visibility" Value="Visible"/>
+            <Setter TargetName="Txt" Property="Foreground" Value="DarkRed"/>
           </DataTrigger>
         </DataTemplate.Triggers>
       </DataTemplate>
